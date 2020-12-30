@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
-import 'file:///C:/Users/paliy/AndroidStudioProjects/sample_app_1/lib/screens/dashboard/dashboard.dart';
+import 'package:sample_app_1/screens/dashboard/dashboard.dart';
 import 'package:sample_app_1/screens/register.dart';
+import 'package:sample_app_1/utils/sharepref_helper.dart';
 import 'package:sample_app_1/utils/string_helper.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginPage extends StatelessWidget {
   static const routeName = "/login";
@@ -68,9 +70,12 @@ class LoginPage extends StatelessWidget {
                         height: 20,
                       ),
                       MaterialButton(
-                        onPressed: () {
-                          if(_loginFormKey.currentState.validate())
-                         Navigator.pushNamed(context, DashboardPage.routeName);
+                        onPressed: () async {
+                          if(_loginFormKey.currentState.validate()) {
+                            var sp = await SharedPreferences.getInstance();
+                            sp.setString(SHARED_PREF_KEYS.EMAIL, etEmail.text);
+                            DashboardPage.start(context);
+                          }
 
                           /*showDialog(
                               context: context,

@@ -1,12 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:sample_app_1/screens/dashboard/posts.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class DashboardPage extends StatefulWidget {
   static const routeName = "/dashboard";
 
+  static void start(BuildContext context) {
+    Navigator.pushReplacementNamed(context, routeName);
+  }
+
   @override
   State<StatefulWidget> createState() {
     //DashboardArgs.of
-    
+
     return _DashboardPageState();
   }
 }
@@ -20,19 +26,17 @@ class _DashboardPageState extends State<DashboardPage> {
       appBar: AppBar(
         title: Text("Dashboard"),
       ),
-      body: Center(
-        child: Text("Selected Item $_selected_index"),
-      ),
+      body: _getBody(_selected_index),
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _selected_index,
         unselectedFontSize: 0,
         onTap: _onItemTap,
         items: [
-          BottomNavigationBarItem(
-              label: "Home", icon: Icon(Icons.home_rounded)),
+          BottomNavigationBarItem(label: "Posts", icon: Icon(Icons.view_list)),
           BottomNavigationBarItem(
               label: "Notification", icon: Icon(Icons.notifications_rounded)),
-          BottomNavigationBarItem(label: "Settings", icon: Icon(Icons.settings))
+          BottomNavigationBarItem(
+              label: "Profile", icon: Icon(Icons.account_circle_rounded))
         ],
       ),
     );
@@ -42,5 +46,11 @@ class _DashboardPageState extends State<DashboardPage> {
     setState(() {
       _selected_index = index;
     });
+  }
+
+  Widget _getBody(int index) {
+    if (index == 0) {
+      return Posts();
+    }
   }
 }
