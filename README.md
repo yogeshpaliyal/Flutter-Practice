@@ -1,6 +1,10 @@
 # sample_app_1
 
-A new Flutter application.
+My First Flutter Sample App
+
+<img src="https://github.com/yogeshpaliyal/Flutter-Practice/blob/master/screenshots/login.png" width="30%"/>
+<img src="https://github.com/yogeshpaliyal/Flutter-Practice/blob/master/screenshots/register.png" width="30%"/>
+<img src="https://github.com/yogeshpaliyal/Flutter-Practice/blob/master/screenshots/dashboard.png" width="30%"/>
 
 ## Getting Started
 
