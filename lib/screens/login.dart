@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'file:///C:/Users/paliy/AndroidStudioProjects/sample_app_1/lib/screens/dashboard/dashboard.dart';
 import 'package:sample_app_1/screens/register.dart';
+import 'package:sample_app_1/utils/string_helper.dart';
 
 class LoginPage extends StatelessWidget {
   static const routeName = "/login";
@@ -39,7 +40,13 @@ class LoginPage extends StatelessWidget {
                         textInputAction: TextInputAction.next,
                         keyboardType: TextInputType.emailAddress,
                         validator: (value) {
-                          return null;
+                          var _result;
+                          if(value.isEmpty){
+                            _result = "Please enter email";
+                          }else if(!StringHelper.isValidEmail(value)){
+                            _result = "Please enter valid email address";
+                          }
+                          return _result;
                         },
                       ),
                       TextFormField(
@@ -50,7 +57,11 @@ class LoginPage extends StatelessWidget {
                         textInputAction: TextInputAction.next,
                         keyboardType: TextInputType.emailAddress,
                         validator: (value) {
-                          return null;
+                          var _result;
+                          if(value.isEmpty){
+                            _result = "Please enter password";
+                          }
+                          return _result;
                         },
                       ),
                       Container(
@@ -58,6 +69,7 @@ class LoginPage extends StatelessWidget {
                       ),
                       MaterialButton(
                         onPressed: () {
+                          if(_loginFormKey.currentState.validate())
                          Navigator.pushNamed(context, DashboardPage.routeName);
 
                           /*showDialog(
