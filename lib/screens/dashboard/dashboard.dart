@@ -6,7 +6,7 @@ class DashboardPage extends StatefulWidget {
   static const routeName = "/dashboard";
 
   static void start(BuildContext context) {
-    Navigator.pushReplacementNamed(context, routeName);
+    Navigator.pushNamedAndRemoveUntil(context, routeName,(r)=> false);
   }
 
   @override
