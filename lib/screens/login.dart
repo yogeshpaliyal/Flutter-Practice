@@ -1,9 +1,15 @@
+
+
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
-import 'package:sample_app_1/screens/dashboard/dashboard.dart';
+import 'package:sample_app_1/models/user_data.dart';
 import 'package:sample_app_1/screens/register.dart';
 import 'package:sample_app_1/utils/sharepref_helper.dart';
 import 'package:sample_app_1/utils/string_helper.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
+import 'dashboard/dashboard.dart';
 
 class LoginPage extends StatelessWidget {
   static const routeName = "/login";
@@ -72,8 +78,12 @@ class LoginPage extends StatelessWidget {
                       MaterialButton(
                         onPressed: () async {
                           if(_loginFormKey.currentState.validate()) {
+                            var userData = User.blank();
+                            userData.firstName = "Yogesh";
+                            userData.lastName = "Paliyal";
+                            userData.email = etEmail.text;
                             var sp = await SharedPreferences.getInstance();
-                            sp.setString(SHARED_PREF_KEYS.EMAIL, etEmail.text);
+                            sp.setString(SHARED_PREF_KEYS.LOGIN_DATA, jsonEncode(userData.toJson()));
                             DashboardPage.start(context);
                           }
 

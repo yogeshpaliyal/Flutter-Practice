@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'file:///C:/Users/paliy/AndroidStudioProjects/sample_app_1/lib/screens/dashboard/dashboard.dart';
+import 'package:sample_app_1/screens/dashboard/dashboard.dart';
 import 'package:sample_app_1/screens/login.dart';
 import 'package:sample_app_1/screens/register.dart';
 

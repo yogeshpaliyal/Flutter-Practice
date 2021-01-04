@@ -10,5 +10,5 @@ class SharedPreferenceHelper{
 }
 
 class SHARED_PREF_KEYS{
-  static const EMAIL = "EMAIL";
+  static const LOGIN_DATA = "LOGIN_DATA";
 }
