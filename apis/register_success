@@ -1,0 +1,9 @@
+{
+  "status" : 200,
+  "message" : "Login Successfully",
+  "data":{
+    "name" : "Yogesh Paliyal",
+    "email" : "techpaliyal@gmail.com",
+    "gender" : "M"
+  }
+}
