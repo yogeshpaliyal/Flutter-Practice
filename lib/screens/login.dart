@@ -1,10 +1,11 @@
-
-
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:sample_app_1/models/user_data.dart';
+import 'package:sample_app_1/networking/LoginCaller.dart';
 import 'package:sample_app_1/screens/register.dart';
+import 'package:sample_app_1/utils/Resource.dart';
+import 'package:sample_app_1/utils/Status.dart';
 import 'package:sample_app_1/utils/sharepref_helper.dart';
 import 'package:sample_app_1/utils/string_helper.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -49,9 +50,9 @@ class LoginPage extends StatelessWidget {
                         keyboardType: TextInputType.emailAddress,
                         validator: (value) {
                           var _result;
-                          if(value.isEmpty){
+                          if (value.isEmpty) {
                             _result = "Please enter email";
-                          }else if(!StringHelper.isValidEmail(value)){
+                          } else if (!StringHelper.isValidEmail(value)) {
                             _result = "Please enter valid email address";
                           }
                           return _result;
@@ -66,7 +67,7 @@ class LoginPage extends StatelessWidget {
                         keyboardType: TextInputType.emailAddress,
                         validator: (value) {
                           var _result;
-                          if(value.isEmpty){
+                          if (value.isEmpty) {
                             _result = "Please enter password";
                           }
                           return _result;
@@ -75,45 +76,14 @@ class LoginPage extends StatelessWidget {
                       Container(
                         height: 20,
                       ),
-                      MaterialButton(
-                        onPressed: () async {
-                          if(_loginFormKey.currentState.validate()) {
-                            var userData = User.blank();
-                            userData.firstName = "Yogesh";
-                            userData.lastName = "Paliyal";
-                            userData.email = etEmail.text;
-                            var sp = await SharedPreferences.getInstance();
-                            sp.setString(SHARED_PREF_KEYS.LOGIN_DATA, jsonEncode(userData.toJson()));
-                            DashboardPage.start(context);
-                          }
-
-                          /*showDialog(
-                              context: context,
-                              builder: (BuildContext mContext) {
-                                return AlertDialog(
-                                  title: Text("Login Data"),
-                                  content: Text(
-                                      "Email => ${etEmail.text} \n Phone => ${etPhone.text} \n Password => ${etPassword.text}"),
-                                  actions: [
-                                    RaisedButton(
-                                      onPressed: () {
-                                        Navigator.pop(context);
-                                      },
-                                      child: Text("Okay"),
-                                    )
-                                  ],
-                                );
-                              });*/
-                        },
-                        color: Colors.amber,
-                        child: Text("Login"),
-                      ),
+                      LoadingMaterialButton(
+                        email: etEmail, password: etPassword,),
                       FlatButton(
                         child: Text("new user? Register Now"),
                         onPressed: () {
-                          Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) {
-
-                           return RegisterPage();
+                          Navigator.push(context, MaterialPageRoute(builder: (
+                              BuildContext context) {
+                            return RegisterPage();
                           }));
                         },
                       )
@@ -129,4 +99,68 @@ class LoginPage extends StatelessWidget {
           ),
         ));
   }
+
+
+  void handleLoginClick() async {
+    /*var response = await LoginCaller().login(etEmail.text, etPassword.text);
+    switch (response.status) {
+      case Status.SUCCESS :
+        var sp = await SharedPreferences.getInstance();
+        sp.setString(
+            SHARED_PREF_KEYS.LOGIN_DATA, jsonEncode(response.data.toJson()));
+        // DashboardPage.start(context);
+        break;
+    }*/
+  }
+}
+
+class LoadingMaterialButton extends StatefulWidget {
+  TextEditingController email = null;
+  TextEditingController password = null;
+
+  LoadingMaterialButton({this.email, this.password});
+
+  @override
+  State<StatefulWidget> createState() {
+    return LoadingMateriaButtonState();
+  }
+
+}
+
+class LoadingMateriaButtonState extends State<LoadingMaterialButton> {
+
+  var _isButtonClicked = false;
+
+  @override
+  Widget build(BuildContext context) {
+    return StreamBuilder<Resource<User>>(
+      stream: _isButtonClicked ?  LoginCaller().login(
+          widget.email.text, widget.password.text) : null,
+      builder: (context, snapshot) {
+        if (snapshot.hasData && snapshot.data != null && snapshot.data.status != null) {
+          switch (snapshot.data.status) {
+            case Status.SUCCESS:
+              return Text("Login Success");
+              break;
+            case Status.ERROR:
+              return Text(snapshot.data.message);
+              break;
+            case Status.LOADING:
+              return CircularProgressIndicator();
+              break;
+            default :
+              return Text("Default");
+          }
+        } else {
+          return RaisedButton(child: Text("Login"),
+            onPressed: () {
+            setState(() {
+              _isButtonClicked = true;
+            });
+          },);
+        }
+      },);
+  }
+
+
 }

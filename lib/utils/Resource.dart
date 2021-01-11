@@ -20,4 +20,8 @@ class Resource<T>{
   Resource.loading(this.data, this.message){
     status = Status.LOADING;
   }
+
+  Resource.loadingEmpty(){
+    status = Status.LOADING;
+  }
 }
